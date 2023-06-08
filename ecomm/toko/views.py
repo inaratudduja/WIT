@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.utils import timezone
 from django.views import generic
 from paypal.standard.forms import PayPalPaymentsForm
+from django.http import JsonResponse
 
 
 from .forms import CheckoutForm
@@ -14,11 +15,14 @@ from .models import ProdukItem, OrderProdukItem, Order, AlamatPengiriman, Paymen
 class HomeListView(generic.ListView):
     template_name = 'home.html'
     queryset = ProdukItem.objects.all()
-    paginate_by = 4
+    paginate_by = 8
 
 class ProductDetailView(generic.DetailView):
     template_name = 'product_detail.html'
     queryset = ProdukItem.objects.all()
+
+class KontakView(generic.TemplateView):
+    template_name = 'kontak.html'
 
 class CheckoutView(LoginRequiredMixin, generic.FormView):
     def get(self, *args, **kwargs):
@@ -212,3 +216,30 @@ def paypal_return(request):
 def paypal_cancel(request):
     messages.error(request, 'Pembayaran dibatalkan')
     return redirect('toko:order-summary')
+
+def decrement_quantity(request, item_id):
+    item = ProdukItem.objects.get(id=item_id)
+    if item.quantity > 1:
+        item.quantity -= 1
+        item.save()
+        total_harga = item.get_total_harga_item()
+        data = {
+            'item_id': item_id,
+            'quantity': item.quantity,
+            'total_harga': total_harga
+        }
+    else:
+        data = {'error': 'Minimum quantity reached'}
+    return JsonResponse(data)
+
+def increment_quantity(request, item_id):
+    item = ProdukItem.objects.get(id=item_id)
+    item.quantity += 1
+    item.save()
+    total_harga = item.get_total_harga_item()
+    data = {
+        'item_id': item_id,
+        'quantity': item.quantity,
+        'total_harga': total_harga
+    }
+    return JsonResponse(data)

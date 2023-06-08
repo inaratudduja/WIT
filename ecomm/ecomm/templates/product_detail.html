@@ -39,7 +39,7 @@
                     <p class="lead">
                         {% if object.harga_diskon %}
                         <span class="me-1">
-                            <del>${{ object.harga }}</del>
+                            <del>Rp{{ object.harga }}</del>
                         </span>
                         <span>Rp{{ object.harga_diskon }}</span>
                         {% else %}
@@ -50,7 +50,7 @@
                     <strong><p style="font-size: 20px;">Deskripsi</p></strong>
 
                     <p>{{ object.deskripsi }}</p>
-                    <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary ms-1">
+                    <a href="{{ object.get_add_to_cart_url }}" class="btn btn-info ms-1">
                         Tambah ke keranjang
                         <i class="fas fa-shopping-cart ms-1"></i>
                     </a>

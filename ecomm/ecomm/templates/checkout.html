@@ -37,7 +37,7 @@
                         <!--Grid row-->
                         <div class="row">
                             <!--Grid column-->
-                            <div class="col-lg-4 col-md-12 mb-4">
+                            <div class="col-lg-4 col-md-12 mb-2">
                                 <p class="mb-0">
                                     Negara
                                 </p>
@@ -48,7 +48,7 @@
                             <!--Grid column-->
 
                             <!--Grid column-->
-                            <div class="col-lg-4 col-md-12 mb-4">
+                            <div class="col-lg-4 col-md-12 mb-2">
                                 <p class="mb-0">
                                     Kode Pos
                                 </p>
@@ -59,10 +59,12 @@
                             <!--Grid column-->
                         </div>
                         <!--Grid row-->
-
                         <hr />
-
+                        <p class="mb-0">
+                            Pembayaran
+                        </p>
                         <div class="my-3">
+
                             {% for value, name in form.fields.opsi_pembayaran.choices %}
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="opsi_pembayaran" id="{{ name }}" value="{{ value }}"  required />
@@ -71,7 +73,7 @@
                             {% endfor %}
                         </div>
                         <hr class="mb-4" />                    
-                    <button class="btn btn-primary" type="submit" {% if order.get_total_harga_order <= 0 %}disabled{% endif %}>Lanjutkan checkout</button>
+                    <button class="btn btn-danger" type="submit" {% if order.get_total_harga_order <= 0 %}disabled{% endif %}>Lanjutkan checkout</button>
                     </div>
                     <!--/.Card-->
                 </div>
@@ -95,16 +97,16 @@
                                 <small class="text-muted">{{ belanjaan.produk_item.deskripsi|truncatechars:50 }}</small>
                             </div>
                             {% if belanjaan.produk_item.harga_diskon %}
-                            <span class="text-muted">${{ belanjaan.get_total_harga_diskon_item }}
+                            <span class="text-muted">Rp{{ belanjaan.get_total_harga_diskon_item }}
                             {% else %}
-                            ${{ belanjaan.get_total_harga_item}}
+                            Rp{{ belanjaan.get_total_harga_item}}
                             {% endif %}
                         </li>
                         {% endfor %}
 
                         <li class="list-group-item d-flex justify-content-between">
-                            <span>Total (USD)</span>
-                            <strong class="text-success">${{ keranjang.get_total_harga_order }}</strong>
+                            <span>Total (Rp)</span>
+                            <strong class="text-success">Rp{{ keranjang.get_total_harga_order }}</strong>
                         </li>
                     </ul>
                     <!-- Cart -->

@@ -1,3 +1,44 @@
 {% load static %}
 
 <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+
+<script>
+    // Function to handle quantity update
+    function updateQuantity(url) {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update the quantity on the page
+            const quantityElement = document.querySelector('.quantity-' + data.item_id);
+            quantityElement.textContent = data.quantity;
+            
+            // Update the total price on the page
+            const totalHargaElement = document.querySelector('.total-harga-' + data.item_id);
+            totalHargaElement.textContent = 'Rp' + data.total_harga;
+        })
+        .catch(error => console.log(error));
+    }
+
+    // Add event listeners for increment and decrement buttons
+    const incrementButtons = document.querySelectorAll('.increment-btn');
+    incrementButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const url = button.getAttribute('data-url');
+            updateQuantity(url);
+        });
+    });
+
+    const decrementButtons = document.querySelectorAll('.decrement-btn');
+    decrementButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const url = button.getAttribute('data-url');
+            updateQuantity(url);
+        });
+    });
+</script>

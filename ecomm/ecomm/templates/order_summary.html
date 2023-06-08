@@ -40,7 +40,7 @@
                     </a>
                 </td>
                 <td>
-                    <div>$
+                    <div>Rp
                         {% if pItem.produk_item.harga_diskon %}
                         {{ pItem.produk_item.harga_diskon }}
                         {% else %}
@@ -48,13 +48,26 @@
                         {% endif %}
                     </div>
                 </td>
-                <td>{{ pItem.quantity }}</td>
+                <td>
+ <!--                   <div class="d-flex justify-content-center align-items-center">
+                        <button class="btn btn-sm btn-secondary decrement-btn" data-url="{% url 'toko:decrement-quantity' pItem.id %}">
+                            -
+                        </button>
+ -->                       
+                        <span class="mx-2">{{ pItem.quantity }}</span>
+<!--                        <button class="btn btn-sm btn-secondary increment-btn" data-url="{% url 'toko:increment-quantity' pItem.id %}">
+                            +
+                        </button>
+ --> 
+                    </div>
+                </td>
+                
                 <td>                
                     {% if pItem.produk_item.harga_diskon %}
-                    ${{ pItem.get_total_harga_diskon_item }}
-                    <span class="badge badge-danger rounded-pill d-inline">Hemat ${{ pItem.get_total_hemat_item }}</span>
+                    Rp{{ pItem.get_total_harga_diskon_item }}
+                    <span class="badge badge-danger rounded-pill d-inline">Hemat Rp{{ pItem.get_total_hemat_item }}</span>
                     {% else %}
-                    ${{ pItem.get_total_harga_item }}
+                    Rp{{ pItem.get_total_harga_item }}
                     {% endif %}
                 </td>
             </tr>
@@ -72,20 +85,65 @@
             {% if keranjang.get_total_harga_order %}
             <tr>
                 <td colspan="4"><b>Total Belanja</b></td>
-                <td><b>${{ keranjang.get_total_harga_order }}</b>
+                <td><b>Rp{{ keranjang.get_total_harga_order }}</b>
                     {% if keranjang.get_total_hemat_order %}
-                    <span class="badge badge-danger">Hemat ${{ keranjang.get_total_hemat_order }}</span>
+                    <span class="badge badge-danger">Hemat Rp{{ keranjang.get_total_hemat_order }}</span>
                     {% endif %}
                 </td>
             </tr>
 
             <tr>
                 <td colspan="5">
-                <a class='btn btn-info float-end ml-2' href="{% url 'toko:checkout' %}">Checkout</a>
+                <a class='btn btn-dark float-end ml-2' href="{% url 'toko:checkout' %}">Checkout</a>
                 <a class='btn btn-danger' href="{% url 'toko:home-produk-list' %}">Lanjut belanja</a>
                 </td>
             </tr>
             {% endif %}
+            
+
+            <script>
+                // Function to handle quantity update
+                function updateQuantity(url) {
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update the quantity on the page
+                        const quantityElement = document.querySelector('.quantity-' + data.item_id);
+                        quantityElement.textContent = data.quantity;
+                        
+                        // Update the total price on the page
+                        const totalHargaElement = document.querySelector('.total-harga-' + data.item_id);
+                        totalHargaElement.textContent = 'Rp' + data.total_harga;
+                    })
+                    .catch(error => console.log(error));
+                }
+            
+                // Add event listeners for increment and decrement buttons
+                const incrementButtons = document.querySelectorAll('.increment-btn');
+                incrementButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const url = button.getAttribute('data-url');
+                        updateQuantity(url);
+                    });
+                });
+            
+                const decrementButtons = document.querySelectorAll('.decrement-btn');
+                decrementButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const url = button.getAttribute('data-url');
+                        updateQuantity(url);
+                    });
+                });
+            </script>
+
+
+            
         </tbody>
   </table>
 </div>
