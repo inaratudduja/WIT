@@ -15,7 +15,14 @@ font-size: 24px;
 }
 
 .card-title {
-color:#3b252e
+color:#3b252e;
+display: -webkit-box;
+height: 50px;
+text-overflow: ellipsis;
+overflow: hidden;
+-webkit-line-clamp: 1;
+-webkit-box-orient: vertical;
+box-sizing:border-box;
 }
 
 .sale {

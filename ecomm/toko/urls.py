@@ -17,4 +17,5 @@ urlpatterns = [
      path('paypal-cancel/', views.paypal_cancel, name='paypal-cancel'),
      path('decrement-quantity/<int:item_id>/', views.decrement_quantity, name='decrement-quantity'),
      path('increment-quantity/<int:item_id>/', views.increment_quantity, name='increment-quantity'),
+ #    path('accounts/', include('allauth.urls'))
 ]

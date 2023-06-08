@@ -39,10 +39,10 @@
                             <a class="nav-link text-white" href="/acne">Acne</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Normal</a>
+                            <a class="nav-link text-white" href="/normal">Normal</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Sensitive</a>
+                            <a class="nav-link text-white" href="/sensitive">Sensitive</a>
                         </li>
 
                     </ul>
@@ -69,7 +69,7 @@
                     <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
                       data-mdb-ripple-color="light">
                       <img src="{{ pItem.gambar.url }}"
-                        class="w-100" />
+                        class="w-100" width="400px" height="300px"/>
                       <a href="{{ pItem.get_absolute_url }}"> 
                         <div class="mask">
                           <div class="d-flex justify-content-start align-items-end h-100">
@@ -83,7 +83,7 @@
                     </div>
                     <div class="card-body">
                       <a href="{{ pItem.get_absolute_url }}" class="text-reset">
-                        <h5 class="card-title mb-2">{{ pItem.nama_produk }}</h5>
+                        <h5 class="card-title mb-2 h-100">{{ pItem.nama_produk }}</h5>
                       </a>
                       <a href="" class="text-reset ">
                         <p>{{ pItem.get_kategori_display }}</p>
